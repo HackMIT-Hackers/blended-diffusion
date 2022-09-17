@@ -64,6 +64,9 @@ def process(body):
         image_editor.reconstruct_image()
         print("Done reconstruct")
         tasks[key] = 100
+        with open(f"{key}_i_0_b_0.png", "rb") as image_file:
+            tasks[key] = base64.b64encode(image_file.read())
+
 
     tasks[key] = 0
     
