@@ -1,7 +1,7 @@
 from optimization.image_editor import ImageEditor
 # from optimization.arguments import get_arguments
 import argparse
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, response
 from functools import wraps
 import base64
 import random
@@ -28,6 +28,11 @@ app = Flask(__name__, template_folder="./build")
 def hello():
     return render_template("index.html")
 
+def parseData(imgString):
+    imgString = imgString.replace('data:image/jpeg;base64,', '')
+    imgString = imgString.replace('data:image/png;base64,', '')
+    imgString = imgString.replace('data:image/webm;base64,', '')
+    return base64.b64decode(imgString)
 
 tasks = {}
 
@@ -35,15 +40,15 @@ tasks = {}
 @parse_body("baseImage","maskImage", "prompt")
 def process(body):
 
-    imageData = body["baseImage"].replace('data:image/jpeg;base64,', '')
-    imageData = imageData.replace('data:image/png;base64,', '')
-    imageData = imageData.replace('data:image/webm;base64,', '')
-
     with open("temp.jpg", "wb") as fh:
-        fh.write(base64.b64decode(imageData))
+        fh.write(parseData(body["baseImage"]))
+    with open("tempMask.png", "wb") as fh:
+        fh.write(parseData(body["maskImage"]))
+    
     key = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
 
-    async def runAlgo():
+    @response.call_on_close
+    def runAlgo():
         args = argparse.Namespace(prompt=body["prompt"], 
         init_image='input_example/temp.jpg', mask='input_example/tempMask.png', 
         skip_timesteps=25, local_clip_guided_diffusion=False, ddim=False, timestep_respacing='100', 
@@ -53,8 +58,9 @@ def process(body):
         image_editor = ImageEditor(args)
         image_editor.edit_image_by_prompt()
         image_editor.reconstruct_image()
-        
-    tasks[key] = imageData
+        tasks[key] = 100
+
+    tasks[key] = 0
     url =  f"http://localhost:9000/pollTask?key={key}"
     return url, 200
 
