@@ -342,4 +342,5 @@ class ImageEditor:
             if j % save_image_interval == 0 or j == max_iterations:
                 print()
                 filename = os.path.join(self.args.output_path, self.args.output_file)
+                print(filename)
                 TF.to_pil_image(sample["pred_xstart"][0].add(1).div(2).clamp(0, 1)).save(filename)
