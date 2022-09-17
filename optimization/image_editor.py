@@ -251,7 +251,8 @@ class ImageEditor:
                 randomize_class=True,
             )
 
-            intermediate_samples = [[] for i in range(self.args.batch_size)]
+            best_dist = 1000
+            best_path = ""
             total_steps = self.diffusion.num_timesteps - self.args.skip_timesteps - 1
             for j, sample in enumerate(samples):
                 should_save_image = j % save_image_interval == 0 or j == total_steps
@@ -293,28 +294,13 @@ class ImageEditor:
                             ranked_pred_path = self.ranked_results_path / (
                                 path_friendly_distance + "_" + visualization_path.name
                             )
+                            if formatted_distance < best_dist:
+                                best_dist = formatted_distance
+                                best_path = ranked_pred_path
                             pred_image_pil.save(ranked_pred_path)
 
-                        intermediate_samples[b].append(pred_image_pil)
-                        if should_save_image:
-                            print("CALLING SAVE IMAGE")
-                            pred_image_pil.save("output/test.png")
-                            # show_editied_masked_image(
-                            #     title=self.args.prompt,
-                            #     source_image=self.init_image_pil,
-                            #     edited_image=pred_image_pil,
-                            #     mask=self.mask_pil,
-                            #     path=visualization_path,
-                            #     distance=formatted_distance,
-                            # )
+        return best_path
 
-            if self.args.save_video:
-                for b in range(self.args.batch_size):
-                    video_name = self.args.output_file.replace(
-                        ".png", f"_i_{iteration_number}_b_{b}.avi"
-                    )
-                    video_path = os.path.join(self.args.output_path, video_name)
-                    save_video(intermediate_samples[b], video_path)
 
     def reconstruct_image(self):
         init = Image.open(self.args.init_image).convert("RGB")
