@@ -40,9 +40,9 @@ tasks = {}
 @parse_body("baseImage","maskImage", "prompt")
 def process(body):
 
-    with open("temp.jpg", "wb") as fh:
+    with open("input/temp.jpg", "wb") as fh:
         fh.write(parseData(body["baseImage"]))
-    with open("tempMask.png", "wb") as fh:
+    with open("input/tempMask.png", "wb") as fh:
         fh.write(parseData(body["maskImage"]))
     
     key = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
@@ -50,15 +50,19 @@ def process(body):
 
     @response.call_on_close
     def runAlgo():
+        print("Starting image algo")
         args = argparse.Namespace(prompt=body["prompt"], 
-        init_image='input_example/temp.jpg', mask='input_example/tempMask.png', 
+        init_image='input/temp.jpg', mask='input/tempMask.png', 
         skip_timesteps=25, local_clip_guided_diffusion=False, ddim=False, timestep_respacing='100', 
         model_output_size=256, aug_num=8, clip_guidance_lambda=1000, range_lambda=50, lpips_sim_lambda=1000, l2_sim_lambda=10000, 
         background_preservation_loss=False, invert_mask=False, enforce_background=True, seed=404, gpu_id=0, 
         output_path='output', output_file=f'{key}.png', iterations_num=1, batch_size=2, save_video=False, export_assets=False)
         image_editor = ImageEditor(args)
+
         image_editor.edit_image_by_prompt()
+        print("Done editing")
         image_editor.reconstruct_image()
+        print("Done reconstruct")
         tasks[key] = 100
 
     tasks[key] = 0
