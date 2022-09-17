@@ -251,7 +251,7 @@ class ImageEditor:
                 randomize_class=True,
             )
 
-            best_dist = 1000
+            best_dist = float('inf')
             best_path = ""
             total_steps = self.diffusion.num_timesteps - self.args.skip_timesteps - 1
             for j, sample in enumerate(samples):
