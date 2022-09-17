@@ -62,7 +62,7 @@ def process(body):
         print("Done editing", path)
         tasks[key] = 100
         with open(path, "rb") as image_file:
-            tasks[key] = base64.b64encode(image_file.read()).encode('utf-8')
+            tasks[key] = base64.b64encode(image_file.read())
 
 
     tasks[key] = 0
@@ -77,6 +77,6 @@ def poller():
     if isinstance(tasks[key], int):
         return str(tasks[key]), 200
     else:
-        return 'data:image/png;base64,' + str(tasks[key]), 200
+        return 'data:image/png;base64,' + tasks[key].decode("utf-8") , 200
 
 app.run(port=9000)
