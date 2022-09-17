@@ -56,7 +56,7 @@ def process(body):
         skip_timesteps=25, local_clip_guided_diffusion=False, ddim=False, timestep_respacing='100', 
         model_output_size=256, aug_num=8, clip_guidance_lambda=1000, range_lambda=50, lpips_sim_lambda=1000, l2_sim_lambda=10000, 
         background_preservation_loss=False, invert_mask=False, enforce_background=True, seed=random.randint(0, 1000), gpu_id=0, 
-        output_path='output', output_file=f'{key}.png', iterations_num=1, batch_size=2, save_video=False, export_assets=False)
+        output_path='output', output_file=f'{key}.png', iterations_num=1, batch_size=1, save_video=False, export_assets=False)
         image_editor = ImageEditor(args)
         image_editor.edit_image_by_prompt()
         print("Done editing")
