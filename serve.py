@@ -62,7 +62,7 @@ def process(body):
         print("Done editing", path)
         tasks[key] = 100
         with open(path, "rb") as image_file:
-            tasks[key] = base64.b64encode(image_file.read())
+            tasks[key] = base64.b64encode(image_file.read()).decode('utf-8')
 
 
     tasks[key] = 0
