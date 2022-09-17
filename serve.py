@@ -47,6 +47,7 @@ def process(body):
     
     key = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
     response = Response(f"http://localhost:9000/pollTask?key={key}")
+    response.headers.add("Access-Control-Allow-Origin", "*")
 
     @response.call_on_close
     def runAlgo():
