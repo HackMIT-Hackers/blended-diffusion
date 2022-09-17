@@ -70,6 +70,6 @@ def poller():
     key = request.args.get('key')
     if key not in tasks:
         return "Task does not exist", 404
-    return 'data:image/png;base64,' + tasks[key], 200
+    return 'data:image/png;base64,' + str(tasks[key]), 200
 
 app.run(port=9000)
