@@ -1,7 +1,7 @@
 from optimization.image_editor import ImageEditor
 # from optimization.arguments import get_arguments
 import argparse
-from flask import Flask, render_template, request, response
+from flask import Flask, render_template, request, Response
 from functools import wraps
 import base64
 import random
@@ -46,6 +46,7 @@ def process(body):
         fh.write(parseData(body["maskImage"]))
     
     key = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
+    response = Response(f"http://localhost:9000/pollTask?key={key}")
 
     @response.call_on_close
     def runAlgo():
@@ -61,9 +62,8 @@ def process(body):
         tasks[key] = 100
 
     tasks[key] = 0
-    url =  f"http://localhost:9000/pollTask?key={key}"
-    return url, 200
-
+    
+    return response
 
 @app.route('/pollTask', methods=["GET"])
 def poller():
