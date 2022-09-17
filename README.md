@@ -1,4 +1,4 @@
-IM Pie 
+Stabilify.ai
 
 An image editor in which you can add and remove objects seamlessly.
 
