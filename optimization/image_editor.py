@@ -296,7 +296,7 @@ class ImageEditor:
                             )
                             print(type(final_distance), type(best_dist))
                             if final_distance < best_dist:
-                                best_dist = formatted_distance
+                                best_dist = final_distance
                                 best_path = ranked_pred_path
                             pred_image_pil.save(ranked_pred_path)
 
