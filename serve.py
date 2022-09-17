@@ -1,7 +1,5 @@
 # from optimization.image_editor import ImageEditor
 # from optimization.arguments import get_arguments
-
-import imp
 from flask import Flask, render_template, request
 from functools import wraps
 import base64
