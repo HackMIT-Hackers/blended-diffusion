@@ -297,14 +297,16 @@ class ImageEditor:
 
                         intermediate_samples[b].append(pred_image_pil)
                         if should_save_image:
-                            show_editied_masked_image(
-                                title=self.args.prompt,
-                                source_image=self.init_image_pil,
-                                edited_image=pred_image_pil,
-                                mask=self.mask_pil,
-                                path=visualization_path,
-                                distance=formatted_distance,
-                            )
+                            print("CALLING SAVE IMAGE")
+                            pred_image_pil.save("output/test.png")
+                            # show_editied_masked_image(
+                            #     title=self.args.prompt,
+                            #     source_image=self.init_image_pil,
+                            #     edited_image=pred_image_pil,
+                            #     mask=self.mask_pil,
+                            #     path=visualization_path,
+                            #     distance=formatted_distance,
+                            # )
 
             if self.args.save_video:
                 for b in range(self.args.batch_size):

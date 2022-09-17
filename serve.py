@@ -58,13 +58,10 @@ def process(body):
         background_preservation_loss=False, invert_mask=False, enforce_background=True, seed=random.randint(0, 1000), gpu_id=0, 
         output_path='output', output_file=f'{key}.png', iterations_num=1, batch_size=2, save_video=False, export_assets=False)
         image_editor = ImageEditor(args)
-
         image_editor.edit_image_by_prompt()
         print("Done editing")
-        image_editor.reconstruct_image()
-        print("Done reconstruct")
         tasks[key] = 100
-        with open(f"{key}_i_0_b_0.png", "rb") as image_file:
+        with open(f"output/{key}_i_0_b_0.png", "rb") as image_file:
             tasks[key] = base64.b64encode(image_file.read())
 
 
@@ -77,6 +74,9 @@ def poller():
     key = request.args.get('key')
     if key not in tasks:
         return "Task does not exist", 404
-    return 'data:image/png;base64,' + str(tasks[key]), 200
+    if isinstance(tasks[key], int):
+        return str(tasks[key]), 200
+    else:
+        return 'data:image/png;base64,' + str(tasks[key]), 200
 
 app.run(port=9000)
