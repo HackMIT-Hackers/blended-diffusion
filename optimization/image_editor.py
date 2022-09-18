@@ -170,19 +170,28 @@ class ImageEditor:
             cmin, cmax = np.where(cols)[0][[0, -1]]
             return rmin, rmax, cmin, cmax
 
+
+
         rmin, rmax, cmin, cmax = bbox2(self.mask_pil)
         print(rmin, rmax, cmin, cmax)
         w, h = self.mask_pil.size
 
-        rmin = max(0, rmin-10)
-        cmin = max(0, cmin-10)
+        desiredSize = min(self.mask_pil.size[0], self.mask_pil.size[1])
+        if w > h:
+            rmin = 0
+            rmax = h-1
+            cropWidth = cmax-cmin
+            toAdd = desiredSize - cropWidth
+            cmin = max(cmin-toAdd//2, 0)
+            cmax = min(cmin+toAdd//2, w-1)
 
-        rmax = min(rmax+10, h-1)
-        cmax = min(cmax+10, w-1)
-
-        boundingWidh = cmax - cmin
-        boundingHeight = rmin - rmax
-
+        else:
+            cmin = 0
+            cmax = w-1
+            cropHeight = rmax-rmin
+            toAdd = desiredSize - cropHeight
+            rmin = max(rmin-toAdd//2, 0)
+            rmax = min(rmin+toAdd//2, w-1)
 
         #BOUND BOXO
         self.init_image_pil = Image.open(self.args.init_image).convert("RGB")
