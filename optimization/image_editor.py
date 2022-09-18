@@ -142,6 +142,9 @@ class ImageEditor:
 
         if self.args.mask is not None:
             self.mask_pil = Image.open(self.args.mask).convert("RGB")
+            x = np.asarray(self.mask_pil)
+            x = (255 * (x[:, :, :3] != 0).any(axis=2)).astype(np.uint8)
+            self.mask_pil = Image.fromarray(x)
             # if self.mask_pil.size != self.image_size:
             #     self.mask_pil = self.mask_pil.resize(self.image_size, Image.NEAREST)  # type: ignore
             image_mask_pil_binarized = ((np.array(self.mask_pil) > 0.5) * 255).astype(np.uint8)
@@ -157,10 +160,8 @@ class ImageEditor:
                 )
                 self.mask_pil.save(mask_path)
         ogMask = self.mask_pil
-        x = np.asarray(ogMask)
-        x = (255 * (x[:, :, :3] != 0).any(axis=2)).astype(np.uint8)
-        ogMask = Image.fromarray(x)
-        
+
+
         print("Mask shape", self.mask_pil.size)
         def bbox2(img):
             rows = np.any(img, axis=1)
@@ -365,8 +366,8 @@ class ImageEditor:
                                 out = pred_image_pil.resize(originalDimensions, Image.LANCZOS)
                                 init_image_pil = Image.open(self.args.init_image).convert("RGB")
                                 maskUsed = ogMask.crop(cropDims).resize(originalDimensions, Image.NEAREST)
-                                # init_image_pil.paste(out, (cropDims[0], cropDims[1]), )
-                                maskUsed.save(ranked_pred_path)
+                                init_image_pil.paste(out, (cropDims[0], cropDims[1]), maskUsed)
+                                init_image_pil.save(ranked_pred_path)
                             else:
                                 pred_image_pil.resize(originalDimensions, Image.LANCZOS).save(ranked_pred_path)
                         
