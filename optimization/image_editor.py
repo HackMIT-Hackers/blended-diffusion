@@ -166,8 +166,8 @@ class ImageEditor:
             return rmin, rmax, cmin, cmax
 
         rmin, rmax, cmin, cmax = bbox2(self.mask_pil)
-        print(self.mask_pil.shape)
-        h, w = self.mask_pil.shape
+        print(self.mask_pil.size())
+        h, w = self.mask_pil.suze()
 
         rmin = max(0, rmin-10)
         cmin = max(0, cmin-10)
