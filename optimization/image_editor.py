@@ -172,7 +172,7 @@ class ImageEditor:
         cmin = max(0, cmin-10)
 
         rmax = min(rmax+10, h-1)
-        cmax = min(cmax+1-, w-1)
+        cmax = min(cmax+10, w-1)
 
         boundingWidh = cmax - cmin
         boundingHeight = rmin - rmax
@@ -184,7 +184,7 @@ class ImageEditor:
             self.init_image_pil = self.init_image_pil[rmin:rmax, :]
         if origW >= 256:
             self.init_image_pil = self.init_image_pil[:, cmin:cmax]
-
+        
 
         self.setProgress(12)
         originalDimensions = self.init_image_pil.size
