@@ -167,7 +167,7 @@ class ImageEditor:
 
         rmin, rmax, cmin, cmax = bbox2(self.mask_pil)
         print(rmin, rmax, cmin, cmax)
-        h, w = self.mask_pil.size
+        w, h = self.mask_pil.size
 
         rmin = max(0, rmin-10)
         cmin = max(0, cmin-10)
@@ -180,7 +180,7 @@ class ImageEditor:
 
         #BOUND BOXO
         self.init_image_pil = Image.open(self.args.init_image).convert("RGB")
-        origH, origW = self.init_image_pil.size
+        origW, origH = self.init_image_pil.size
         cropDims = None
         if origW >=256 and origH >=256:
             cropDims = (cmin, rmin, cmax, rmax)
