@@ -78,10 +78,14 @@ def process(body):
 def poller():
     key = request.args.get('key')
     if key not in tasks:
-        return "Task does not exist", 404
-    if isinstance(tasks[key], int):
-        return str(tasks[key]), 200
+        resp = "Task does not exist"
+    elif isinstance(tasks[key], int):
+        resp = str(tasks[key])
     else:
-        return 'data:image/png;base64,' + tasks[key].decode("utf-8") , 200
+        resp = 'data:image/png;base64,' + tasks[key].decode("utf-8")
+
+    response = Response(resp)
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
 
 app.run(port=9000)
