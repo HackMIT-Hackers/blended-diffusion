@@ -210,11 +210,11 @@ class ImageEditor:
         self.init_image_pil = Image.open(self.args.init_image).convert("RGB")
         origW, origH = self.init_image_pil.size
         cropDims = None
-        if origW >=256 and origH >=256:
+        if origW >=400 and origH >=400:
             cropDims = (cmin, rmin, cmax, rmax)
-        elif origH  > 256:
+        elif origH  > 400:
             cropDims = (0, rmin, origW-1, rmax)
-        elif origW > 256:
+        elif origW > 400:
             cropDims = (cmin, 0, cmax, origH-1)
 
         print("CroP DIMS", cropDims)
