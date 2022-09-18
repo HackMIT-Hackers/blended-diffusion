@@ -189,7 +189,7 @@ class ImageEditor:
                     needed = h - (cmax-cmin)
                     if cmin == 0:
                         cmax = min(cmax+needed, w-1)
-                    else
+                    else:
                         cmin = max(cmin-needed, 0)
         else:
             cmin = 0
