@@ -348,9 +348,10 @@ class ImageEditor:
                             outImg = pred_image_pil.resize(originalDimensions, Image.LANCZOS)
                             if cropDims:
                                 originalDimensions = (cropDims[3]-cropDims[1], cropDims[2]-cropDims[0])
+                                print(cropDims)
                                 out = pred_image_pil.resize(originalDimensions, Image.LANCZOS)
-                                init_image_pil = Image.open(self.args.init_image).convert("RGB")
-                                init_image_pil.paste(out, box=cropDims)
+                                # init_image_pil = Image.open(self.args.init_image).convert("RGB")
+                                # init_image_pil.paste(out, box=cropDims)
                                 out.save(ranked_pred_path)
                             else:
                                 pred_image_pil.resize(originalDimensions, Image.LANCZOS).save(ranked_pred_path)
