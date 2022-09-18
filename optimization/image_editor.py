@@ -27,8 +27,9 @@ from utils.visualization import show_tensor_image, show_editied_masked_image
 
 
 class ImageEditor:
-    def __init__(self, args) -> None:
+    def __init__(self, args, setProgress) -> None:
         self.args = args
+        self.setProgress = setProgress
         os.makedirs(self.args.output_path, exist_ok=True)
 
         self.ranked_results_path = Path(os.path.join(self.args.output_path, RANKED_RESULTS_DIR))
@@ -131,14 +132,15 @@ class ImageEditor:
         text_embed = self.clip_model.encode_text(
             clip.tokenize(self.args.prompt).to(self.device)
         ).float()
-
         self.image_size = (self.model_config["image_size"], self.model_config["image_size"])
         self.init_image_pil = Image.open(self.args.init_image).convert("RGB")
         self.init_image_pil = self.init_image_pil.resize(self.image_size, Image.LANCZOS)  # type: ignore
         self.init_image = (
             TF.to_tensor(self.init_image_pil).to(self.device).unsqueeze(0).mul(2).sub(1)
         )
-
+        progress = 10
+        self.setProgress(10)
+        
         if self.args.export_assets:
             img_path = self.assets_path / Path(self.args.output_file)
             self.init_image_pil.save(img_path)
@@ -254,6 +256,7 @@ class ImageEditor:
             best_dist = float('inf')
             best_path = ""
             total_steps = self.diffusion.num_timesteps - self.args.skip_timesteps - 1
+            delta = (80 - progress)/(samples*self.args.batch_size)
             for j, sample in enumerate(samples):
                 should_save_image = j % save_image_interval == 0 or j == total_steps
                 if should_save_image or self.args.save_video:
@@ -299,7 +302,9 @@ class ImageEditor:
                                 best_dist = final_distance
                                 best_path = ranked_pred_path
                             pred_image_pil.save(ranked_pred_path)
-
+                        progress+=delta
+                        self.setProgress(progress)
+            self.setProgress(100)
         return best_path
 
 

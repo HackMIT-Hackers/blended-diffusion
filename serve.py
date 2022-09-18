@@ -58,7 +58,11 @@ def process(body):
         model_output_size=256, aug_num=8, clip_guidance_lambda=1000, range_lambda=50, lpips_sim_lambda=1000, l2_sim_lambda=10000, 
         background_preservation_loss=False, invert_mask=False, enforce_background=True, seed=random.randint(0, 1000), gpu_id=0, 
         output_path='output', output_file=f'{key}.png', iterations_num=1, batch_size=2, save_video=False, export_assets=False)
-        image_editor = ImageEditor(args)
+        def setProgress(x):
+            print("Set progress to", x)
+            tasks[key] = x
+
+        image_editor = ImageEditor(args, setProgress)
         path = image_editor.edit_image_by_prompt()
         print("Done editing", path)
         tasks[key] = 100
