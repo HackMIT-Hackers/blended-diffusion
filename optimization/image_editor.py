@@ -138,6 +138,7 @@ class ImageEditor:
         self.setProgress(10)
         self.init_image_pil = Image.open(self.args.init_image).convert("RGB")
         self.setProgress(12)
+        originalDimensions = im.size
         self.init_image_pil = self.init_image_pil.resize(self.image_size, Image.LANCZOS)  # type: ignore
         self.setProgress(15)
         self.init_image = (
@@ -307,7 +308,7 @@ class ImageEditor:
                             if final_distance < best_dist:
                                 best_dist = final_distance
                                 best_path = ranked_pred_path
-                            pred_image_pil.save(ranked_pred_path)
+                            pred_image_pil.resize(originalDimensions, Image.LANCZOS).save(ranked_pred_path)
                         
             self.setProgress(100)
         return best_path
