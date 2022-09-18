@@ -189,9 +189,13 @@ class ImageEditor:
         elif origW > 256:
             cropDims = (cmin, 0, cmax, origH-1)
 
+        print("CroP DIMS", cropDims)
         if cropDims:
             self.init_image_pil = self.init_image_pil.crop(cropDims)
             self.mask_pil = self.mask_pil.crop(cropDims)
+
+        print("image size", self.init_image_pil.size)
+        print("mask sz", self.mask_pil.size)
 
         self.setProgress(12)
         originalDimensions = self.init_image_pil.size
