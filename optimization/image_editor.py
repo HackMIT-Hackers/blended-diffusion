@@ -256,9 +256,7 @@ class ImageEditor:
             best_dist = float('inf')
             best_path = ""
             total_steps = self.diffusion.num_timesteps - self.args.skip_timesteps - 1
-            # delta = (80 - progress)/(75*)
             for j, sample in enumerate(samples):
-                print(j)
                 progress+=1
                 self.setProgress(progress)
                 should_save_image = j % save_image_interval == 0 or j == total_steps

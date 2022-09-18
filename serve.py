@@ -59,7 +59,7 @@ def process(body):
         background_preservation_loss=False, invert_mask=False, enforce_background=True, seed=random.randint(0, 1000), gpu_id=0, 
         output_path='output', output_file=f'{key}.png', iterations_num=1, batch_size=2, save_video=False, export_assets=False)
         def setProgress(x):
-            print("Set progress to", x)
+            # print("Set progress to", x)
             tasks[key] = x
 
         image_editor = ImageEditor(args, setProgress)
