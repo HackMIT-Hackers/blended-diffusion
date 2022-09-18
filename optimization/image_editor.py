@@ -178,6 +178,7 @@ class ImageEditor:
         boundingWidh = cmax - cmin
         boundingHeight = rmin - rmax
 
+
         #BOUND BOXO
         self.init_image_pil = Image.open(self.args.init_image).convert("RGB")
         origW, origH = self.init_image_pil.size
@@ -196,6 +197,11 @@ class ImageEditor:
 
         if self.mask_pil.size != self.image_size:
             self.mask_pil = self.mask_pil.resize(self.image_size, Image.NEAREST) 
+
+        if self.args.mask is not None:
+            image_mask_pil_binarized = ((np.array(self.mask_pil) > 0.5) * 255).astype(np.uint8)
+            self.mask = TF.to_tensor(Image.fromarray(image_mask_pil_binarized))
+            self.mask = self.mask[0, ...].unsqueeze(0).unsqueeze(0).to(self.device)
 
         self.setProgress(12)
         originalDimensions = self.init_image_pil.size
