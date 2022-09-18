@@ -142,8 +142,8 @@ class ImageEditor:
 
         if self.args.mask is not None:
             self.mask_pil = Image.open(self.args.mask).convert("RGB")
-            if self.mask_pil.size != self.image_size:
-                self.mask_pil = self.mask_pil.resize(self.image_size, Image.NEAREST)  # type: ignore
+            # if self.mask_pil.size != self.image_size:
+            #     self.mask_pil = self.mask_pil.resize(self.image_size, Image.NEAREST)  # type: ignore
             image_mask_pil_binarized = ((np.array(self.mask_pil) > 0.5) * 255).astype(np.uint8)
             if self.args.invert_mask:
                 image_mask_pil_binarized = 255 - image_mask_pil_binarized
@@ -157,7 +157,7 @@ class ImageEditor:
                 )
                 self.mask_pil.save(mask_path)
 
-        print(self.mask_pil)
+        print("Mask shape", self.mask_pil.size)
         def bbox2(img):
             rows = np.any(img, axis=1)
             cols = np.any(img, axis=0)
@@ -166,7 +166,7 @@ class ImageEditor:
             return rmin, rmax, cmin, cmax
 
         rmin, rmax, cmin, cmax = bbox2(self.mask_pil)
-        print(self.mask_pil.size)
+        print(rmin, rmax, cmin, cmax)
         h, w = self.mask_pil.size
 
         rmin = max(0, rmin-10)
