@@ -181,14 +181,14 @@ class ImageEditor:
             rmin = 0
             rmax = h-1
             cropWidth = cmax-cmin
-            toAdd = w - cropWidth
+            toAdd = h - cropWidth
             cmin = max(cmin-toAdd//2, 0)
             cmax = min(cmax+toAdd//2, w-1)
         else:
             cmin = 0
             cmax = w-1
             cropHeight = rmax-rmin
-            toAdd = h - cropHeight
+            toAdd = w - cropHeight
             rmin = max(rmin-toAdd//2, 0)
             rmax = min(rmax+toAdd//2, h-1)
 
