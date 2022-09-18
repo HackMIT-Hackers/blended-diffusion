@@ -156,7 +156,7 @@ class ImageEditor:
                     self.args.output_file.replace(".png", "_mask.png")
                 )
                 self.mask_pil.save(mask_path)
-
+        ogMask = self.mask_pil
         print("Mask shape", self.mask_pil.size)
         def bbox2(img):
             rows = np.any(img, axis=1)
@@ -361,7 +361,7 @@ class ImageEditor:
                                 print(cropDims)
                                 out = pred_image_pil.resize(originalDimensions, Image.LANCZOS)
                                 init_image_pil = Image.open(self.args.init_image).convert("RGB")
-                                init_image_pil.paste(out, (cropDims[0], cropDims[1]))
+                                init_image_pil.paste(out, (cropDims[0], cropDims[1]), ogMask.crop(cropDims))
                                 init_image_pil.save(ranked_pred_path)
                             else:
                                 pred_image_pil.resize(originalDimensions, Image.LANCZOS).save(ranked_pred_path)
