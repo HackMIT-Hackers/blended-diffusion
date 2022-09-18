@@ -8,7 +8,7 @@ from utils.video import save_video
 from numpy import random
 from optimization.augmentations import ImageAugmentations
 
-from PIL import Image
+from PIL import Image,  ImageFilter
 import torch
 from torchvision import transforms
 import torchvision.transforms.functional as F
