@@ -181,10 +181,15 @@ class ImageEditor:
         #BOUND BOXO
         self.init_image_pil = Image.open(self.args.init_image).convert("RGB")
         origH, origW = self.init_image_pil.size
-        if origH  >= 256:
-            self.init_image_pil = self.init_image_pil[rmin:rmax, :]
-        if origW >= 256:
-            self.init_image_pil = self.init_image_pil[:, cmin:cmax]
+        if origW >=256 and origH >=256:
+            self.init_image_pil = self.init_image_pil.crop((cmin, rmin, cmax, rmax))
+            self.mask_pil = self.mask_pil.crop((cmin, rmin, cmax, rmax))
+        elif origH  >= 256:
+            self.init_image_pil = self.init_image_pil.crop((0, rmin, origW-1, rmax))
+            self.mask_pil = self.mask_pil.crop((0, rmin, origW-1, rmax))
+        elif origW >= 256:
+            self.init_image_pil = self.init_image_pil.crop((cmin, 0, cmax, origH-1))
+            self.mask_pil = self.mask_pil.crop((cmin, 0, cmax, origH-1))
 
 
         self.setProgress(12)
