@@ -137,8 +137,9 @@ class ImageEditor:
         self.image_size = (self.model_config["image_size"], self.model_config["image_size"])
         self.setProgress(10)
 
-        self.mask = torch.ones_like(self.init_image, device=self.device)
         self.mask_pil = None
+        self.mask = torch.ones((self.image_size, self.image_size), device=self.device)
+
         if self.args.mask is not None:
             self.mask_pil = Image.open(self.args.mask).convert("RGB")
             if self.mask_pil.size != self.image_size:
