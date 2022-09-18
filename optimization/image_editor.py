@@ -180,7 +180,7 @@ class ImageEditor:
 
         #BOUND BOXO
         self.init_image_pil = Image.open(self.args.init_image).convert("RGB")
-        origH, origW = self.init_image_pil.shape
+        origH, origW = self.init_image_pil.size
         if origH  >= 256:
             self.init_image_pil = self.init_image_pil[rmin:rmax, :]
         if origW >= 256:
