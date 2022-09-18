@@ -136,20 +136,6 @@ class ImageEditor:
         self.setProgress(7)
         self.image_size = (self.model_config["image_size"], self.model_config["image_size"])
         self.setProgress(10)
-        self.init_image_pil = Image.open(self.args.init_image).convert("RGB")
-        self.setProgress(12)
-        originalDimensions = self.init_image_pil.size
-        self.init_image_pil = self.init_image_pil.resize(self.image_size, Image.LANCZOS)  # type: ignore
-        self.setProgress(15)
-        self.init_image = (
-            TF.to_tensor(self.init_image_pil).to(self.device).unsqueeze(0).mul(2).sub(1)
-        )
-        progress = 20
-        self.setProgress(20)
-
-        if self.args.export_assets:
-            img_path = self.assets_path / Path(self.args.output_file)
-            self.init_image_pil.save(img_path)
 
         self.mask = torch.ones_like(self.init_image, device=self.device)
         self.mask_pil = None
@@ -170,6 +156,52 @@ class ImageEditor:
                 )
                 self.mask_pil.save(mask_path)
 
+        print(self.mask_pil)
+        def bbox2(img):
+            rows = np.any(img, axis=1)
+            cols = np.any(img, axis=0)
+            rmin, rmax = np.where(rows)[0][[0, -1]]
+            cmin, cmax = np.where(cols)[0][[0, -1]]
+            return rmin, rmax, cmin, cmax
+
+        rmin, rmax, cmin, cmax = bbox2(self.mask_pil)
+        print(self.mask_pil.shape)
+        h, w = self.mask_pil.shape
+
+        rmin = max(0, rmin-10)
+        cmin = max(0, cmin-10)
+
+        rmax = min(rmax+10, h-1)
+        cmax = min(cmax+1-, w-1)
+
+        boundingWidh = cmax - cmin
+        boundingHeight = rmin - rmax
+
+        #BOUND BOXO
+        self.init_image_pil = Image.open(self.args.init_image).convert("RGB")
+        origH, origW = self.init_image_pil.shape
+        if origH  >= 256:
+            self.init_image_pil = self.init_image_pil[rmin:rmax, :]
+        if origW >= 256:
+            self.init_image_pil = self.init_image_pil[:, cmin:cmax]
+
+
+        self.setProgress(12)
+        originalDimensions = self.init_image_pil.size
+        self.init_image_pil = self.init_image_pil.resize(self.image_size, Image.LANCZOS)  # type: ignore
+        self.setProgress(15)
+        self.init_image = (
+            TF.to_tensor(self.init_image_pil).to(self.device).unsqueeze(0).mul(2).sub(1)
+        )
+        progress = 20
+        self.setProgress(20)
+
+        if self.args.export_assets:
+            img_path = self.assets_path / Path(self.args.output_file)
+            self.init_image_pil.save(img_path)
+
+
+    return rmin, rmax, cmin, cmax
         def cond_fn(x, t, y=None):
             if self.args.prompt == "":
                 return torch.zeros_like(x)
