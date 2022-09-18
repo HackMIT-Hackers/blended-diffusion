@@ -347,7 +347,7 @@ class ImageEditor:
                                 best_path = ranked_pred_path
                             outImg = pred_image_pil.resize(originalDimensions, Image.LANCZOS)
                             if cropDims:
-                                originalDimensions = (cropDims[2]-cropDims[0], cropDims[3]-cropsDims[1])
+                                originalDimensions = (cropDims[2]-cropDims[0], cropDims[3]-cropDims[1])
                                 out = pred_image_pil.resize(originalDimensions, Image.LANCZOS)
                                 init_image_pil = Image.open(self.args.init_image).convert("RGB")
                                 init_image_pil.paste(cropDims[0], cropDims[1])
