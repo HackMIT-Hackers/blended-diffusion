@@ -176,12 +176,12 @@ class ImageEditor:
         print(rmin, rmax, cmin, cmax)
         w, h = self.mask_pil.size
 
-        desiredSize = min(self.mask_pil.size[0], self.mask_pil.size[1])
+
         if w > h:
             rmin = 0
             rmax = h-1
             cropWidth = cmax-cmin
-            toAdd = desiredSize - cropWidth
+            toAdd = w - cropWidth
             cmin = max(cmin-toAdd//2, 0)
             cmax = min(cmin+toAdd//2, w-1)
 
@@ -189,7 +189,7 @@ class ImageEditor:
             cmin = 0
             cmax = w-1
             cropHeight = rmax-rmin
-            toAdd = desiredSize - cropHeight
+            toAdd = h - cropHeight
             rmin = max(rmin-toAdd//2, 0)
             rmax = min(rmin+toAdd//2, w-1)
 
