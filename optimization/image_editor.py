@@ -181,16 +181,17 @@ class ImageEditor:
         #BOUND BOXO
         self.init_image_pil = Image.open(self.args.init_image).convert("RGB")
         origH, origW = self.init_image_pil.size
+        cropDims = None
         if origW >=256 and origH >=256:
-            self.init_image_pil = self.init_image_pil.crop((cmin, rmin, cmax, rmax))
-            self.mask_pil = self.mask_pil.crop((cmin, rmin, cmax, rmax))
-        elif origH  >= 256:
-            self.init_image_pil = self.init_image_pil.crop((0, rmin, origW-1, rmax))
-            self.mask_pil = self.mask_pil.crop((0, rmin, origW-1, rmax))
-        elif origW >= 256:
-            self.init_image_pil = self.init_image_pil.crop((cmin, 0, cmax, origH-1))
-            self.mask_pil = self.mask_pil.crop((cmin, 0, cmax, origH-1))
+            cropDims = (cmin, rmin, cmax, rmax)
+        elif origH  > 256:
+            cropDims = (0, rmin, origW-1, rmax)
+        elif origW > 256:
+            cropDims = (cmin, 0, cmax, origH-1)
 
+        if cropDims:
+            self.init_image_pil = self.init_image_pil.crop(cropDims)
+            self.mask_pil = self.mask_pil.crop(cropDims)
 
         self.setProgress(12)
         originalDimensions = self.init_image_pil.size
@@ -344,7 +345,14 @@ class ImageEditor:
                             if final_distance < best_dist:
                                 best_dist = final_distance
                                 best_path = ranked_pred_path
-                            pred_image_pil.resize(originalDimensions, Image.LANCZOS).save(ranked_pred_path)
+                            outImg = pred_image_pil.resize(originalDimensions, Image.LANCZOS)
+                            if cropDims:
+                                originalDimensions = (cropDims[2]-cropDims[0], cropDims[3]-cropsDims[1])
+                                out = pred_image_pil.resize(originalDimensions, Image.LANCZOS)
+                                init_image_pil = Image.open(self.args.init_image).convert("RGB")
+                                init_image_pil.paste(cropDims[0], cropDims[1])
+                            else:
+                                pred_image_pil.resize(originalDimensions, Image.LANCZOS).save(ranked_pred_path)
                         
             self.setProgress(100)
         return best_path
