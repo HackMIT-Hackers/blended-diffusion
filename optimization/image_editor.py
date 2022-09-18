@@ -256,9 +256,11 @@ class ImageEditor:
             best_dist = float('inf')
             best_path = ""
             total_steps = self.diffusion.num_timesteps - self.args.skip_timesteps - 1
-            delta = (80 - progress)/(100*self.args.batch_size)
+            # delta = (80 - progress)/(75*)
             for j, sample in enumerate(samples):
                 print(j)
+                progress+=1
+                self.setProgress(progress)
                 should_save_image = j % save_image_interval == 0 or j == total_steps
                 if should_save_image or self.args.save_video:
                     self.metrics_accumulator.print_average_metric()
@@ -303,8 +305,7 @@ class ImageEditor:
                                 best_dist = final_distance
                                 best_path = ranked_pred_path
                             pred_image_pil.save(ranked_pred_path)
-                        progress+=delta
-                        self.setProgress(progress)
+                        
             self.setProgress(100)
         return best_path
 
