@@ -184,7 +184,7 @@ class ImageEditor:
             self.init_image_pil = self.init_image_pil[rmin:rmax, :]
         if origW >= 256:
             self.init_image_pil = self.init_image_pil[:, cmin:cmax]
-        
+
 
         self.setProgress(12)
         originalDimensions = self.init_image_pil.size
@@ -200,8 +200,6 @@ class ImageEditor:
             img_path = self.assets_path / Path(self.args.output_file)
             self.init_image_pil.save(img_path)
 
-
-    return rmin, rmax, cmin, cmax
         def cond_fn(x, t, y=None):
             if self.args.prompt == "":
                 return torch.zeros_like(x)
