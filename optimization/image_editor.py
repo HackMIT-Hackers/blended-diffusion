@@ -361,9 +361,10 @@ class ImageEditor:
                                 print(cropDims)
                                 out = pred_image_pil.resize(originalDimensions, Image.LANCZOS)
                                 init_image_pil = Image.open(self.args.init_image).convert("RGB")
-                                print(ogMask.shape)
+                                print("EEEEND")
+                                print(ogMask.size)
                                 print(cropDims)
-                                print(init_image_pil.shape)
+                                print(init_image_pil.size)
                                 init_image_pil.paste(out, (cropDims[0], cropDims[1]), ogMask.crop(cropDims))
                                 init_image_pil.save(ranked_pred_path)
                             else:
