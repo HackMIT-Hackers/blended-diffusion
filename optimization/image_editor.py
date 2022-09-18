@@ -185,6 +185,12 @@ class ImageEditor:
             if toAdd > 1:
                 cmin = max(cmin-toAdd//2, 0)
                 cmax = min(cmax+toAdd//2, w-1)
+                if cmax - cmin < h:
+                    needed = h - (cmax-cmin)
+                    if cmin == 0:
+                        cmax = min(cmax+needed, w-1)
+                    else
+                        cmin = max(cmin-needed, 0)
         else:
             cmin = 0
             cmax = w-1
@@ -193,6 +199,12 @@ class ImageEditor:
             if toAdd > 1:
                 rmin = max(rmin-toAdd//2, 0)
                 rmax = min(rmax+toAdd//2, h-1)
+                if rmax - rmin < w:
+                    needed = w - (rmax-rmin)
+                    if rmin == 0:
+                        rmax = min(rmax+needed, h-1)
+                    else:
+                        rmin = max(rmin-needed, 0)
 
         #BOUND BOXO
         self.init_image_pil = Image.open(self.args.init_image).convert("RGB")
