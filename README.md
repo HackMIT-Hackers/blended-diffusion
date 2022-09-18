@@ -1,6 +1,7 @@
-Stabilify.ai
+# Blend.ai
 
 An image editor in which you can add and remove objects seamlessly.
+
 
 # Acknowledgments
 This code borrows from [CLIP](https://github.com/openai/CLIP), [Guided-diffusion](https://github.com/openai/guided-diffusion) and [CLIP-Guided Diffusion](https://colab.research.google.com/drive/12a_Wrfi2_gwwAuN3VvMTwVMz9TfqctNj).
