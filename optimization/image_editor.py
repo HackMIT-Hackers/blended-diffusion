@@ -140,7 +140,7 @@ class ImageEditor:
         )
         progress = 10
         self.setProgress(10)
-        
+
         if self.args.export_assets:
             img_path = self.assets_path / Path(self.args.output_file)
             self.init_image_pil.save(img_path)
@@ -256,8 +256,9 @@ class ImageEditor:
             best_dist = float('inf')
             best_path = ""
             total_steps = self.diffusion.num_timesteps - self.args.skip_timesteps - 1
-            delta = (80 - progress)/(samples*self.args.batch_size)
+            delta = (80 - progress)/(100*self.args.batch_size)
             for j, sample in enumerate(samples):
+                print(j)
                 should_save_image = j % save_image_interval == 0 or j == total_steps
                 if should_save_image or self.args.save_video:
                     self.metrics_accumulator.print_average_metric()
