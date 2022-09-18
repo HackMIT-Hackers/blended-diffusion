@@ -183,15 +183,14 @@ class ImageEditor:
             cropWidth = cmax-cmin
             toAdd = w - cropWidth
             cmin = max(cmin-toAdd//2, 0)
-            cmax = min(cmin+toAdd//2, w-1)
-
+            cmax = min(cmax+toAdd//2, w-1)
         else:
             cmin = 0
             cmax = w-1
             cropHeight = rmax-rmin
             toAdd = h - cropHeight
             rmin = max(rmin-toAdd//2, 0)
-            rmax = min(rmin+toAdd//2, w-1)
+            rmax = min(rmax+toAdd//2, h-1)
 
         #BOUND BOXO
         self.init_image_pil = Image.open(self.args.init_image).convert("RGB")
