@@ -138,7 +138,7 @@ class ImageEditor:
         self.setProgress(10)
         self.init_image_pil = Image.open(self.args.init_image).convert("RGB")
         self.setProgress(12)
-        originalDimensions = im.size
+        originalDimensions = self.init_image_pil.size
         self.init_image_pil = self.init_image_pil.resize(self.image_size, Image.LANCZOS)  # type: ignore
         self.setProgress(15)
         self.init_image = (
