@@ -46,7 +46,7 @@ def process(body):
         fh.write(parseData(body["maskImage"]))
     
     key = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
-    response = Response(f"http://localhost:9000/pollTask?key={key}")
+    response = Response(f"/pollTask?key={key}")
     response.headers.add("Access-Control-Allow-Origin", "*")
 
     @response.call_on_close
