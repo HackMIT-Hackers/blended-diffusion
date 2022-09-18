@@ -194,8 +194,8 @@ class ImageEditor:
             self.init_image_pil = self.init_image_pil.crop(cropDims)
             self.mask_pil = self.mask_pil.crop(cropDims)
 
-        print("image size", self.init_image_pil.size)
-        print("mask sz", self.mask_pil.size)
+        if self.mask_pil.size != self.image_size:
+            self.mask_pil = self.mask_pil.resize(self.image_size, Image.NEAREST) 
 
         self.setProgress(12)
         originalDimensions = self.init_image_pil.size
