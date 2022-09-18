@@ -385,7 +385,7 @@ class ImageEditor:
                             outImg = pred_image_pil.resize(originalDimensions, Image.LANCZOS)
                             if cropDims:
                                 originalDimensions = (cropDims[2]-cropDims[0], cropDims[3]-cropDims[1],)
-                                out = pred_image_pil.resize(originalDimensions, Image.LANCZOS).filter(ImageFilter.GaussianBlur(radius = 2))
+                                out = pred_image_pil.resize(originalDimensions, Image.LANCZOS)
                                 init_image_pil = Image.open(self.args.init_image).convert("RGB")
                                 maskUsed = ogMask.crop(cropDims).resize(originalDimensions, Image.NEAREST).filter(ImageFilter.GaussianBlur(radius = 5))
                                 init_image_pil.paste(out, (cropDims[0], cropDims[1]), maskUsed)
