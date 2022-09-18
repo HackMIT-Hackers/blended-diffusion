@@ -129,17 +129,22 @@ class ImageEditor:
         return dists.item()
 
     def edit_image_by_prompt(self):
+        self.setProgress(5)
         text_embed = self.clip_model.encode_text(
             clip.tokenize(self.args.prompt).to(self.device)
         ).float()
+        self.setProgress(7)
         self.image_size = (self.model_config["image_size"], self.model_config["image_size"])
+        self.setProgress(10)
         self.init_image_pil = Image.open(self.args.init_image).convert("RGB")
+        self.setProgress(12)
         self.init_image_pil = self.init_image_pil.resize(self.image_size, Image.LANCZOS)  # type: ignore
+        self.setProgress(15)
         self.init_image = (
             TF.to_tensor(self.init_image_pil).to(self.device).unsqueeze(0).mul(2).sub(1)
         )
-        progress = 10
-        self.setProgress(10)
+        progress = 20
+        self.setProgress(20)
 
         if self.args.export_assets:
             img_path = self.assets_path / Path(self.args.output_file)
